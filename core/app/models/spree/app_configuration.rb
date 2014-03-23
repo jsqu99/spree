@@ -96,5 +96,15 @@ module Spree
     def searcher_class=(sclass)
       @searcher_class = sclass
     end
+
+    # shipment_handler_class allows spree extension writers to provide their own Shipment Handler class
+    def shipment_handler_class
+      @shipment_handler_class ||= Spree::ShipmentHandler
+    end
+
+    def shipment_handler_class=(sclass)
+      @shipment_handler_class = sclass
+    end
+
   end
 end
