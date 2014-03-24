@@ -314,19 +314,7 @@ module Spree
       end
 
       def after_ship
-        Spree::Config.shipment_handler_class.handle_after_ship(self)
-      end
-
-      def update_order_shipment_state
-        new_state = OrderUpdater.new(order).update_shipment_state
-        order.update_columns(
-          shipment_state: new_state,
-          updated_at: Time.now,
-        )
-      end
-
-      def send_shipped_email
-        ShipmentMailer.shipped_email(self.id).deliver
+        Spree::Config.shipment_handler_class.factory(self).perform
       end
 
       def set_cost_zero_when_nil
