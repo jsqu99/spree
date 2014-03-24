@@ -237,8 +237,8 @@ describe Spree::Shipment do
 
     context "when shipment state changes to shipped" do
       before do
-        shipment.stub(:send_shipped_email)
-        shipment.stub(:update_order_shipment_state)
+        Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:send_shipped_email)
+        Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:update_order_shipment_state)
       end
 
       it "should call after_ship" do
@@ -372,8 +372,8 @@ describe Spree::Shipment do
     end
 
     it "should update shipped_at timestamp" do
-      shipment.stub(:send_shipped_email)
-      shipment.stub(:update_order_shipment_state)
+      Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:send_shipped_email)
+      Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:update_order_shipment_state)
       shipment.ship!
       shipment.shipped_at.should_not be_nil
       # Ensure value is persisted
@@ -389,14 +389,14 @@ describe Spree::Shipment do
         mail_message
       }
       mail_message.should_receive :deliver
-      shipment.stub(:update_order_shipment_state)
+      Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:update_order_shipment_state)
       shipment.ship!
       shipment_id.should == shipment.id
     end
 
     it "finalizes adjustments" do
-      shipment.stub(:send_shipped_email)
-      shipment.stub(:update_order_shipment_state)
+      Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:send_shipped_email)
+      Spree::Config.shipment_handler_class.factory(shipment).class.any_instance.stub(:update_order_shipment_state)
       shipment.adjustments.each do |adjustment|
         expect(adjustment).to receive(:finalize!)
       end
