@@ -338,10 +338,7 @@ module Spree
       end
 
       def after_ship
-        inventory_units.each &:ship!
-        send_shipped_email
-        touch :shipped_at
-        update_order_shipment_state
+        ShipmentHandler.factory(self).perform
       end
 
       def update_order_shipment_state
